@@ -1,3 +1,5 @@
+-----------------AQUI COMEÇA O CÓDIGO DO TRABALHO -------------------------------
+
 ------------------MERGESORT----------------------------------------
 tamanho :: [Int] -> Int
 tamanho [] = 0
@@ -77,19 +79,77 @@ heapsort :: [Int] -> [Int]
 heapsort as
 	| True = lacoHeapsort (buildMaxHeap as ((tamanho as)-1)) ((tamanho as)-1) ((tamanho as)-1)
 
+----------------------------- AQUI COMECA O EXERCICIO DA AULA --------------------------------------
+
+---------------exercicio slide 6---------------------
+menor :: Int -> Int -> Int
+menor a b
+	| a<b = a
+	|otherwise = b
+
+maior :: Int -> Int -> Int
+maior a b
+	| a>b = a
+	| otherwise = b
+
+meio :: Int -> Int -> Int -> Int
+meio a b c
+	| a>= b && a<=c = a
+	| a>= c && a<=b = a
+	| b>= a && b<=c = b
+	| b>= c && b<=a = b
+	| c>= b && c<=a = c
+	| c>= a && c<=b = c
 	
-	
-	
+menorMaior :: Int -> Int -> Int -> (Int, Int)
+menorMaior a b c
+	| True = ((menor (menor a b) c),( maior (maior a b) c ))
+
+ordenaTripla :: (Int,Int,Int) -> (Int, Int, Int)
+ordenaTripla (a,b,c) 
+	| True = ((menor (menor a b) c), meio a b c , (maior (maior a b) c)) 
 
 
+-----------exercicio slide  7 e 8-----------------------
+
+type Ponto = (Float,Float)
+type Reta = (Ponto,Ponto)
+
+primeiraCoordenadaPonto :: Ponto -> Float
+primeiraCoordenadaPonto (x,y) = x
+
+segundaCoordenadaPonto :: Ponto -> Float
+segundaCoordenadaPonto (x,y) = y
+
+retaVertical :: Reta -> Bool
+retaVertical ((x1,y1),(x2,y2)) = (x1 == x2) 
+
+coordY :: Reta -> Float -> Float
+coordY ((x1,y1),(x2,y2)) x
+	| retaVertical ((x1,y1),(x2,y2)) = 0
+	| otherwise = (((y2 - y1)/(x2 - x1)) * (x - x1)) + y1
 
 
+-- Exercicio slide  13 ao 16
 
+type Pessoa = String
+type Livro = String
+type BancoDados = [(Pessoa,Livro)]
 
+baseExemplo :: BancoDados
+baseExemplo =  [("Sergio","O Senhor dos Aneis"),("Andre","sDuna"), ("Fernando","Jonathan Strange & Mr. Norrell"),  ("Fernando","A Game of Thrones")]
 
+livros :: BancoDados-> Pessoa -> [Livro]
+livros [] p = []
+livros ((a,b):c) p 
+	| a == p = [b] ++ livros c p
+	| otherwise = livros c p
 
-
-
+emprestimos :: BancoDados -> Livro -> [Pessoa]
+emprestimos [] l = []
+emprestimos ((a,b):c) l
+	| b == l = [a] ++ (livros c l)
+	| otherwise = (livros c l)
 
 
 

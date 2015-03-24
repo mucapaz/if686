@@ -151,6 +151,20 @@ emprestimos ((a,b):c) l
 	| b == l = [a] ++ (livros c l)
 	| otherwise = (livros c l)
 
+emprestado :: BancoDados -> Livro -> Bool
+emprestado [] l = False
+emprestado ((a,b):c) l
+	| b == l = True
+	| otherwise = emprestado c l
+	
+qtdEmprestimos :: BancoDados -> Pessoa -> Int
+qtdEmprestimos [] p = 0
+qtdEmprestimos ((a,b):c) p
+	| a == p = (qtdEmprestimos c p)+1
+	| otherwise = qtdEmprestimos c p
 
-
-
+devolver :: BancoDados -> Pessoa -> Livro -> BancoDados
+devolver [] p l = []	
+devolver ((a,b):c) p l
+	| p == a && l == b = c
+	| otherwise = (a,b) : (devolver c p l)

@@ -105,18 +105,74 @@ comparaConjuntos :: [Int] -> [Int] -> String
 comparaConjuntos a b = comparaConjuntosUnique (unique a) (unique b)
 
 
+-- Aqui começa o codigo do exercicio em sala
+
+takei :: [t] -> Int -> [t]
+takei [] i = []
+takei as 0 = []
+takei as i = [head as] ++ (takei (tail as) (i-1))
+
+dropi :: [t] -> Int -> [t]
+dropi [] i = []
+dropi as 0 = as
+dropi as i = (dropi (tail as) (i-1)) 
+
+takeWhilei :: (t->Bool) -> [t] -> [t]
+takeWhilei pred [] = []
+takeWhilei pred as
+	| (pred (head as)) == False  = []
+	| otherwise = [head as] ++ (takeWhilei pred (tail as))
+
+dropWhilei :: (t->Bool) -> [t] -> [t]
+dropWhilei pred [] = []
+dropWhilei pred as
+	| (pred (head as)) == False = as
+	| otherwise = (dropWhilei pred (tail as))
 
 
+menor :: Ord i => [i] -> i -> [i]
+menor l x
+	| l == [] = []	
+	| head l < x = [head l] ++ menor (tail l) (x)
+	| otherwise = menor(tail l) (x)
+             
+maior :: Ord i =>  [i] -> i -> [i] 
+maior l x
+	| l == [] = []
+	| head l >= x = [head l] ++ maior (tail l) (x)
+    | otherwise = maior(tail l) (x)       
+                   
+qsort :: Ord i => [i] -> [i]
+qsort l
+	| l == [] = []
+	| otherwise = qsort(menor(tail l)(head l)) ++ [head l] ++ qsort(maior(tail l)(head l))
 
+toList :: Eq j => [[j]] => [j]
+toList [] = []
+toList as = (head as) ++ (toList (tail as))
 
+toUniqueAux :: Eq j => [j] -> j -> [j]
+toUniqueAux [] i = []
+toUniqueAux as i
+	| head as == i = (toUniqueAux (tail as) i)
+	| otherwise = [head as] ++ (toUniqueAux (tail as) i)
 
+toUnique :: Eq j => [j] -> [j]
+toUnique [] = []
+toUnique as = [head as] ++ (toUnique (toUniqueAux (tail as) (head as)))
 
+agruparCont :: Eq j => [j] -> j -> Int
+agruparCont [] i = 0
+agruparCont as i
+	| head as == i = 1 + (agruparCont (tail as) i)
+	| otherwise = (agruparCont (tail as) i)
 
+agruparAux :: Eq j => [j] -> [j] -> [(j,Int)]
+agruparAux [] as = []
+agruparAux ar as = [(head ar, agruparCont as (head ar))] ++ agruparAux (tail ar) (as)  
 
-
-
-
-
+agrupar:: Eq j => [[j]] -> [(j,Int)]
+agrupar as = agruparAux (toUnique(toList as)) (toList as)
 
 
 

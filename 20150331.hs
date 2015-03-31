@@ -78,11 +78,11 @@ buscaAux as a b
 	| otherwise = (buscaAux (tail as) (a-1) (b-1))
 
 busca :: [[Int]] -> Int -> Int -> Int -> Int-> [Int]
-busca [] a b c d = []
-busca as a b c d
-	| a == b && a == 0 = (buscaAux(head as) c d)
-	| a == 0 = (buscaAux(head as) c d) ++ (busca (tail as) 0 (b-1) c d)
-	| otherwise = (busca (tail as) (a-1) (b-1) c d)
+busca [] nx ny mx my = []
+busca as nx ny mx my
+	| nx == mx && nx == 0 = (buscaAux(head as) ny my)
+	| nx == 0 = (buscaAux(head as) ny my) ++ (busca (tail as) nx ny (mx-1) my)
+	| otherwise = (busca (tail as) (nx-1) (ny) (mx-1) my)
 
 quicksort :: [Int] -> [Int]
 quicksort [] = []
@@ -90,14 +90,14 @@ quicksort as = quicksort[a| a <- (tail as), a < (head as)] ++ [head as] ++  quic
 	
 medAuxPar :: [Int] -> Int -> Int
 medAuxPar as a
-	| a == 0 = (div (head as) 2) + medAuxPar (tail as) (a-1) 
+	| a == 0 = (div (head as)  2) + medAuxPar (tail as) (a-1) 
 	| a == -1 =  (div (head as) 2) 
 	| otherwise = medAuxPar (tail as) (a-1)
 
 medAuxImpar :: [Int] -> Int -> Int
 medAuxImpar as a
-	| a == 0 =  (div (head as) 2) 
-	| otherwise = medAuxPar (tail as) (a-1)
+	| a == 0 =  head as 
+	| otherwise = medAuxImpar (tail as) (a-1)
 	
 med :: [Int] -> Int
 med as 
@@ -105,18 +105,18 @@ med as
 	| otherwise = medAuxImpar as (div (size as) 2)
 	
 medianaAux :: [[Int]] -> Int -> Int -> Int -> Int -> Int
-medianaAux base nx ny mx my = med(quicksort((busca base nx mx ny my)))
+medianaAux base nx ny mx my = med(quicksort((busca base nx ny mx my)))
 
 mediana :: [[Int]] -> Int -> Int -> Int-> Int-> Int -> Int -> [Int]
 mediana base nx ny mx my maxx maxy 
-	| nx < 0 || ny < 0 || mx >= maxx || my >= maxy = [1000]
+	| nx < 0 || ny < 0 || mx >= maxx || my >= maxy = [0]
 	| otherwise = [medianaAux base nx ny mx my]
 	
 -- x - n > 0 && x + n < mx && y - n > 0 && y + n < my
 fm :: [[Int]] -> [Int] -> Int -> Int -> Int -> Int-> [[Int]]
 fm base aux n mx my i
 	| i == (mx * my) = []
-	| x == mx - 1 = [m] ++ fm (base) [] n mx my (i+1)   
+	| y == my - 1 = [m] ++ fm (base) [] n mx my (i+1)   
  	| otherwise =  fm (base) (m) n mx my (i+1)   
 	
 	where x = div i my;

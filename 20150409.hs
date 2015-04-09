@@ -1,3 +1,4 @@
+import Data.Char
 -- Aqui comeca o codigo do trabalho 6 
 
 data Node t = No t [t] deriving (Eq, Show)
@@ -42,6 +43,90 @@ dfsLoop (Grafo as) i j value
 
 dfs :: Eq t => Graph t -> t -> Bool
 dfs (Grafo gr) value = dfsLoop (Grafo gr) 0 (length gr) value
+
+
+-- Aqui comeca o codigo dos exercicios em aula
+
+sqr :: Int -> Int
+sqr n = n * n
+
+quad :: [Float] -> [Float]
+quad as = map sqrt as 
+
+posicao :: Char -> Int
+posicao a = ((ord a) - (ord 'a') + 1)
+
+posicaoAlfabeto :: String -> [Int]
+posicaoAlfabeto str = map posicao str
+
+mapi :: (t->u) -> [t] -> [u]
+mapi f as = [f a| a <- as]
+
+fold :: (t->t->t) -> [t] -> t
+fold f [a] = a 
+fold f (a:as) = f a (fold f as)
+
+andi :: [Bool] -> Bool
+andi as = fold (&&) as	
+{-
+foldri :: (t->u->u) -> u -> [t] -> u  
+foldri f s [] = s
+foldri f s (a:as) = f a (foldri f s as) 
+-}
+-- memberAux :: 
+
+
+member :: Eq t => t -> [t] -> Bool
+member a as = foldr (==) (False) (map (==a) as)
+
+f :: Eq t => t -> [t] -> [t]
+f a b
+	| elem a b = b
+	| otherwise = [a] ++ b
+			
+union :: Eq t => [t] -> [t] -> [t]
+union a b = foldr f [] (a++b) 
+
+-- vemMonstro :: String -> [Int] -> [Int]
+-- vemMonstro str as = [(fstrAux str)] ++ as
+
+
+{-
+flist :: [String] -> [Int]
+flist [] = []
+flist (a:as) = [(fstrAux a)] ++ (flist as)
+
+-}
+
+faux :: String -> [Int]
+faux str = [fstrAux str]
+
+fstrAux :: String -> Int
+fstrAux [] =  0
+fstrAux (a:as) = (ord a - (ord 'a') + 1)  + fstrAux as 
+
+
+fstr :: [String] -> [Int]
+fstr as = foldr (++) [] (map faux as)  
+
+{-
+
+-}
+
+--map fstrAux as 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

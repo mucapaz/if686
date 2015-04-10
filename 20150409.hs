@@ -77,7 +77,7 @@ foldri f s (a:as) = f a (foldri f s as)
 
 
 member :: Eq t => t -> [t] -> Bool
-member a as = foldr (==) (False) (map (==a) as)
+member a as = foldr (||) (False) (map (==a) as)
 
 f :: Eq t => t -> [t] -> [t]
 f a b

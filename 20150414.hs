@@ -1,4 +1,6 @@
 -- trabalho 7
+import Data.List
+import Data.Char
 
 comp :: (t -> u) -> (u -> v) -> (t -> v)
 comp g f =  fog
@@ -63,4 +65,36 @@ filterTree f (Node a b c)
 -- filterTree (<10) (Node 5 (Node 7 (Node 15 Nil (Node 6 Nil Nil)) (Node 2 Nil Nil)) (Node 10 Nil Nil))
 
 
+-- Aqui começa o exercicio da aula
+
+{-
+fun :: [[Int]] -> Int -> [[Int]]
+fun [] x = []
+fun (a:as) x = [filter (<x) a] ++ fun as x	
+
+sem :: [[Int]] -> Int -> [[Int]]
+sem [] x = []
+sem (a:as) x
+	| (foldr (+) 0 a) <= x = [a] ++ 
+
+fun2 :: [[Int]] -> Int -> [[Int]]
+fun2 as x = filter (foldr (+) 0 )
+-}
+
+
+fun :: [[Int]] -> Int -> [[Int]]
+fun as t = (filter f as)  where f x = ((foldr (+) 0 x) <= t)
+
+e3 :: Eq t => [t] -> [t] -> [t] 
+e3 a b = nub(filter f (a++b)) where f x = ((elem x a) && (elem x b)) 
+
+e4 :: Eq t => [t] -> [t] -> [t] 
+e4 a b = nub(filter f (a++b)) where f x = ((elem x a) && not(elem x b)) 
+
+teste :: Num t => t -> t
+teste a = ((+1) . (\x -> x - 10)) a 
+-- not, elem, fromEnum, nub, sum import Data.char, import Data.List
+-- (\x -> x - 10)
+
+-- fazer logo o map.filter
 

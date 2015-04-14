@@ -10,6 +10,29 @@ compose f (g:as) = [comp g f] ++ compose f as
 
 -- head (compose (+1) [(+3)]) 1
 
+data Node t = No t [t] deriving (Eq, Show)
+data Graph t = Grafo [Node t] deriving (Eq, Show)
+
+mapNode :: (t->v) -> Node t -> Node v 
+mapNode f (No a as) = No (f a)  (map f as)  
+
+mapGraphAux :: (t->v) -> [Node t] -> [Node v]
+mapGraphAux f [] = []
+mapGraphAux f (a:as) = [mapNode f a] ++ mapGraphAux f as
+
+mapGraph :: (t->v) -> Graph t -> Graph v
+mapGraph f (Grafo  as) = (Grafo (mapGraphAux f as)) 
+
+baseGraph :: Num t => Graph t 
+baseGraph = (Grafo [(No 1 [2]), (No 10 [12])])
+
+foldGraphAux :: (t->t->t) -> [t] -> t
+foldGraphAux f [a] = a 
+foldGraphAux f (a:as) = f a (foldGraphAux f as)
+
+foldGraph :: Graph t -> (Node t->Node t->Node t) -> Node t 
+foldGraph (Grafo as) f = foldGraphAux f as  
+
 
 data Tree t = Nil | Node t (Tree t) (Tree t) deriving (Show,Eq)
 
@@ -38,5 +61,31 @@ filterTree f (Node a b c)
 
 
 -- filterTree (<10) (Node 5 (Node 7 (Node 15 Nil (Node 6 Nil Nil)) (Node 2 Nil Nil)) (Node 10 Nil Nil))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

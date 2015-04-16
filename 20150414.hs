@@ -98,3 +98,26 @@ teste a = ((+1) . (\x -> x - 10)) a
 
 -- fazer logo o map.filter
 
+mapFilter :: (t->Bool) -> [[t]] -> [[t]]
+mapFilter f [] = []
+mapFilter f (a:as) = [[ x | x <- a, f x]] ++ mapFilter f as
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

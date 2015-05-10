@@ -1,4 +1,4 @@
--- Aqui começa o trabalho 8
+-- Aqui começa o trabalho 9
 data No t = Node t [(t,Int)] deriving(Eq,Show)
 data Graph t = Grafo [No t] deriving(Eq,Show)
 

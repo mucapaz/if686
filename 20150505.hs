@@ -1,3 +1,78 @@
+-- Trabalho 11
+
+import Data.Char
+
+type Cpf = String
+type Nome = String
+type Pessoa = (Cpf,Nome)
+type Hash = [[Pessoa]]
+
+base :: Hash
+base = [[("000.000.000-00","Samuel"),("000.000.000-55","Rene")],[("000.000.000-01","Rena")],[],[],[],[],[],[],[],[]]
+
+evaluate :: Cpf -> Int
+evaluate as
+	| as == [] = 0
+	| isDigit (head as) = mod ( digitToInt (head as) + (evaluate (tail as)) ) (10)
+	| otherwise = mod (evaluate (tail as)) (10) 
+
+getByCpf :: [Pessoa] -> Cpf -> Maybe Pessoa
+getByCpf [] c = Nothing
+getByCpf ((x,y):z) c
+	| x == c = Just (x,y)
+	| otherwise = getByCpf z c
+
+getByEvaluate :: Hash -> Cpf -> Int -> Maybe Pessoa
+getByEvaluate h c 0 = getByCpf (head h) (c)  
+getByEvaluate h c i = getByEvaluate (tail h) (c) (i-1)
+
+get :: Hash -> Cpf -> Maybe Pessoa
+get h c = getByEvaluate (h) (c) (evaluate c)
+
+
+putByCpf :: [Pessoa] -> Pessoa -> [Pessoa]
+putByCpf [] p = [p]
+putByCpf as p = [head as] ++ putByCpf (tail as) p
+
+putByEvaluate :: Hash -> Pessoa -> Int -> Hash
+putByEvaluate h p 0 = [(putByCpf (head h) p)] ++ (tail h) 
+putByEvaluate h p i = [head h] ++ (putByEvaluate (tail h) p (i-1)) 
+
+put :: Hash -> Pessoa -> Hash
+put h (a,b) = putByEvaluate (h) (a,b) (evaluate a)
+
+removeByCpf :: [Pessoa] -> Cpf -> Maybe [Pessoa]
+removeByCpf [] c = Nothing
+removeByCpf ((x,y):z) c
+	| x == c = Just z
+	| otherwise = ( (>>=)(removeByCpf z c) (\k -> Just (k ++  [(x,y)] ) ))      --  [(x,y)] ++ removeByCpf z c
+	
+raux :: (Maybe [Pessoa]) -> (Maybe Hash)
+raux (Nothing) = Nothing
+raux (Just x) = Just [x]
+
+removeByEvaluate :: Hash -> Cpf -> Int -> Maybe Hash
+removeByEvaluate h c 0 = (>>=)  (raux (removeByCpf (head h) c))  ( \x ->  Just (x ++ (tail h) ))
+removeByEvaluate h c i = (>>=) (removeByEvaluate (tail h) c (i-1)) (\x -> Just ([head h] ++ x) )
+
+remove :: Hash -> Cpf -> Maybe Hash
+remove h c = removeByEvaluate h c (evaluate c) 
+
+hasKeyByCpf :: [Pessoa] -> Cpf -> Bool
+hasKeyByCpf [] c = False
+hasKeyByCpf ((x,y):z) c
+	| x == c = True
+	| otherwise = hasKeyByCpf z c
+
+hasKeyByEvaluate :: Hash -> Cpf -> Int -> Bool
+hasKeyByEvaluate h c 0 = hasKeyByCpf (head h) (c)
+hasKeyByEvaluate h c i = hasKeyByEvaluate (tail h) (c) (i-1)
+
+hasKey :: Hash -> Cpf -> Bool
+hasKey h c = hasKeyByEvaluate h c (evaluate c) 
+
+
+--Exercicios IO
 import System.IO
 
 shorten:: String -> String

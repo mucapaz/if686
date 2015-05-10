@@ -157,4 +157,44 @@ remove :: State Int
 remove = State $ (\(as,x:bs) -> (x,(as,bs)))
 
 
+-- exercicio 2 do trabalho 11
 
+pro :: String -> Maybe String
+pro [] = Nothing
+pro (a:[])
+	| (a < 'a' || a > 'z') && a /= ' ' = Nothing 
+	| otherwise = Just [a]
+pro (a:as)
+	| (a < 'a' || a > 'z') && a /= ' ' = Nothing 
+	| otherwise = (>>=) (pro as) (\x -> Just ([a] ++ x))
+
+preAux :: String -> String-> [Maybe String]
+preAux [] ar = [Just ar]
+preAux (a:as) ar
+		| a == ' ' = [Just ar] ++ preAux as "" 
+		| otherwise = preAux as (ar++[a]) 
+		
+
+pre :: Maybe String -> [Maybe String]
+pre Nothing = [Nothing]
+pre (Just x) = preAux x "" 
+	
+imprime :: [Maybe String] -> IO()
+imprime (Nothing:as) = putStr "\n"
+imprime [] = putStr ""
+imprime ((Just x):as)= do {
+			putStrLn x;
+			imprime as;
+		}
+	
+resolve ::String -> IO()
+resolve as = do {
+			imprime ( pre (pro as));
+		}
+
+f :: IO ()
+f = do{
+	line <- getLine;
+	resolve(line);	
+	f;
+}

@@ -147,3 +147,55 @@ public class E2Thread extends Thread{
 
 //e4 
 
+package exercicio;
+
+import java.util.Vector;
+
+public class E2Thread extends Thread{
+	
+	int i = 0 ;
+	public static ThreadLocal<Integer> tlocal = new ThreadLocal<Integer>();
+	
+	public E2Thread (int i){
+		this.i = i;
+	}
+	
+	
+	public void run (){
+		
+		tlocal.set(i);
+		new Teste().metodo();
+		tlocal.remove();
+	}
+	
+	public static void main(String args[]) throws InterruptedException{
+		
+		Vector<E2Thread> vec = new Vector<E2Thread>();
+		
+		for(int x=0;x<10;x++){
+			vec.add(new E2Thread(x*10000));			
+		}
+		
+		for(int x=0;x<10;x++){
+			vec.elementAt(x).start();
+		}
+		
+		for(int x=0;x<10;x++){
+			vec.elementAt(x).join();			
+		}
+		
+	}
+}
+
+class Teste{
+	
+	public void metodo(){
+			int i =  E2Thread.tlocal.get();
+			for(int x=0;x<i;x++){
+				System.out.println(x);
+			}
+			
+	}
+	
+	
+}

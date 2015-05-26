@@ -199,3 +199,106 @@ class Teste{
 	
 	
 }
+
+
+//e5
+
+package exercicio;
+
+import java.util.Vector;
+
+public class EThread extends Thread{
+	
+	public static Vector<Integer> vec = new Vector<Integer>();
+	int i;
+	public EThread(int i){
+		this.i = i;		
+	}
+	
+	public boolean isPrime(){
+		if(i == 0 || i == 1) return false;
+		for(int x=2;x<i;x++){
+			if(i%x == 0) return false;
+		}
+		return true;
+	}
+	
+	public void run(){
+		if(isPrime()) vec.add(i);
+	}
+	
+	 public static void main(String[] args) throws InterruptedException{
+		Vector<EThread> v = new Vector<EThread>();
+		
+		for(int x=0;x<10000;x++){
+			v.add(new EThread(x));
+		}
+		
+		for(int x=0;x<10000;x++){
+			v.elementAt(x).start();
+		}
+		
+		for(int x=0;x<10000;x++){
+			v.elementAt(x).join();
+		}
+		
+		for(int x=0;x<vec.size();x++)System.out.println(vec.elementAt(x));
+		
+	}
+	
+	
+}
+
+
+//e6 
+
+package exercicio;
+
+import java.util.Vector;
+
+public class EThread extends Thread{
+	
+	public static Vector<Integer> vec = new Vector<Integer>();
+	int i;
+	public EThread(int i){
+		this.i = i;		
+	}
+	
+	public boolean isPrime(){
+		if(i == 0 || i == 1) return false;
+		for(int x=2;x<i;x++){
+			if(i%x == 0) return false;
+			
+		}
+		return true;
+	}
+	
+	public void run(){
+		if(isPrime()) vec.add(i);
+	}
+	
+	 public static void main(String[] args) throws InterruptedException{
+		Vector<EThread> v = new Vector<EThread>();
+		
+		for(int x=0;x<10000;x++){
+			v.add(new EThread(x));
+		}
+		
+		for(int x=0;x<10000;x++){
+			v.elementAt(x).start();
+			v.elementAt(x).sleep(1);
+		}
+		
+		for(int x=0;x<10000;x++){
+			v.elementAt(x).join();
+		}
+		
+		for(int x=0;x<vec.size();x++)System.out.println(vec.elementAt(x));
+		
+	}
+	
+	
+}
+
+
+

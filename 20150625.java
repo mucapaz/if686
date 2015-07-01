@@ -105,18 +105,41 @@ class No{
 
 /////////////////////////////
 
-
 import java.util.*;
 import java.util.concurrent.locks.*;
  
 public class Main {
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception{
 		
 		Vetor vec = new Vetor(100);
+		
+		ArrayList<ThreadWrapper> vt = new ArrayList<ThreadWrapper>();
+		
+		for(int x=0;x<100;x++){
+			vt.add(new ThreadWrapper(vec));
+		}
+		
+		for(int x=0;x<100;x++){
+			vt.get(x).run();
+		}	
+		for(int x=0;x<100;x++){
+			vt.get(x).join();
+		}
+	}
+}
+
+class ThreadWrapper extends Thread{
+	
+	Vetor vec;
+	
+	ThreadWrapper(Vetor vec){
+		this.vec = vec;
+	}	
+	public void run(){
 		Random rand = new Random();
 		int r,v1,v2;
-		for(int x=0;x<1000;x++){
+		for(int x=0;x<20;x++){
 			r = Math.abs(rand.nextInt())%3;
 			v1 = Math.abs(rand.nextInt())%100;
 			v2 = Math.abs(rand.nextInt())%100;
@@ -217,6 +240,27 @@ class Vetor{
 		return (i>=0) && (i<ar.length);
 	}
 }
+
+// Trabalho 13
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -244,6 +244,59 @@ class Vetor{
 // Trabalho 13
 
 
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Main{
+	public static void main(String[] args) throws Exception{
+		AtomicInteger ai = new AtomicInteger(0);
+		ArrayList<T> ar = new ArrayList<T>();	
+			
+		for(int x=0;x<100;x++){
+			ar.add(new T(ai));
+		}	
+		
+		for(int x=0;x<100;x++){
+			ar.get(x).run();
+		}	
+		
+		for(int x=0;x<100;x++){
+			ar.get(x).join();
+		}	
+		
+	}	
+}
+
+class T extends Thread{
+	ArrayList<Integer> ar;
+	AtomicInteger ai;
+	
+	T(AtomicInteger ai){
+		this.ai = ai;
+		ar = new ArrayList<Integer>();
+	}
+	
+	public void run(){
+		for(int x=0;x<10000;x++){
+			ar.add(ai.incrementAndGet());
+		}		
+	}
+}
+
+
+/*
+Liveness - quando existe a certeza que em algum momento o programa chega em um estado desejavel. Processos que devem executar seram executados. Mensagens enviadas por processos seram recebidas.
+
+Safety - é a propriedade de que em um ambiente de diversas threads temos que apenas uma thread por vez tem o poder de manipular algum dado de memória compartilhada.
+
+Para o exercicio das árvores temos safety a parti do momento que deixamos só uma thread por vez usar um nó e também temos liveness porque todos processos que devem ser executados são processados.
+
+*/
+
+
+
+
 
 
 

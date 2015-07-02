@@ -13,7 +13,7 @@ public class Main {
 			if(rand.nextInt() > 0)al.add(new Person("Male", bath,x));
 			else al.add(new Person("Female", bath,x));
 			
-			System.out.println("Criado " + x + " " + al.get(x).genre );	
+			//System.out.println("Criado " + x + " " + al.get(x).genre );	
 				
 			al.get(x).start();
 			
@@ -23,7 +23,7 @@ public class Main {
 			al.get(x).join();
 		}
 	
-		System.out.println("-------------");	
+		//System.out.println("-------------");	
 		bath.join();	
 	}	
 }
@@ -44,15 +44,15 @@ class Person extends Thread {
 		synchronized(this) {
 			bath.push(this);
 			try{
-				System.out.println("Entrou em wait "  + id);
+				//System.out.println("Entrou em wait "  + id);
 				wait(); // time to do something in the bathroom
-				System.out.println("Fez o trabalho "  + id);
+				//System.out.println("Fez o trabalho "  + id);
 			}catch(Exception e){
 				e.printStackTrace();
 				return;
 			}
 			bath.remove(this);
-			System.out.println("Removeu "  +id);
+			//System.out.println("Removeu "  +id);
 		}
 	}
 }
@@ -74,10 +74,11 @@ class Bathroom extends Thread {
 
 	public void run() {
 		while(true) {
-			System.out.println(total);
+			//System.out.println(total);
 			if(total == 0) return;
 			if(!schedule()){
 				System.out.println("Deu MERDA");
+				return;
 			}	
 		}
 	}
@@ -107,7 +108,6 @@ class Bathroom extends Thread {
 			}
 		}
 		while (queue.size() > 0) {
-			System.out.println("lol");
 			if (inside.size() > 0) {
 				if (inside.get(0).genre == queue.peek().genre) {
 					if(inside.size() < limit){

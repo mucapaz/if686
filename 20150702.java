@@ -76,11 +76,13 @@ class Bathroom extends Thread {
 		while(true) {
 			System.out.println(total);
 			if(total == 0) return;
-			schedule();
+			if(!schedule()){
+				System.out.println("Deu MERDA");
+			}	
 		}
 	}
 	
-	public synchronized void schedule(){
+	public synchronized boolean schedule(){
 		String ge = "";
 		boolean ok = true;
 		for(Person pe : inside){
@@ -91,10 +93,7 @@ class Bathroom extends Thread {
 				}
 			}
 		}
-		if(!ok){
-			System.out.println("Deu merda");
-			return;
-		}
+		if(!ok) return false;
 		
 		Person person;
 		while (inside.size() > 0) {
@@ -124,8 +123,7 @@ class Bathroom extends Thread {
 				break;
 			}
 		}
-		
-		
+		return true;
 	}
 	public synchronized void push(Person p) {
 		synchronized(p){

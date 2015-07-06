@@ -61,8 +61,8 @@ class No{
                 this.v = v;
                 //this.lock = new ReentrantLock();
         }
-        //synchronized
-        synchronized  void insert(int n){
+       
+        void insert(int n){
         		
         		boolean bool = lock.tryLock();
         		
